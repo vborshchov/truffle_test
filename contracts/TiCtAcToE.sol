@@ -16,7 +16,7 @@ contract TiCtAcToE
     }
 
     modifier onlyActiveUser() {
-        require(msg.sender == activeUser, "Only active user can make move");
+        require(msg.sender == activeUser, "Only active user can make a move");
         _;
     }
 
