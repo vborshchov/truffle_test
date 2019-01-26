@@ -51,4 +51,12 @@ contract('TiCtAcToE', accounts => {
             assert(error.toString().includes('the cell is already used by another player'), error.toString())
         }
     })
+    it('should check legality of move', async () => {
+        try {
+            await instance.move(4,1, {from: account})
+            assert.fail()
+        } catch (error) {
+            assert(error.toString().includes('illegal move'), error.toString())
+        }
+    })
 })
