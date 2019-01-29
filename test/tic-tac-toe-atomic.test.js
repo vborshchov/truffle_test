@@ -11,8 +11,7 @@ contract('TiCtAcToE', accounts => {
     })
 
     it('should be ready to start the game', async () =>{
-        let result = await instance.isReady()
-        assert.equal(result, true)
+        assert.equal(await instance.isReady(), true)
     })
 
     it('should have empty board', async () =>{
@@ -65,61 +64,5 @@ contract('TiCtAcToE', accounts => {
         } catch (error) {
             assert(error.toString().includes('illegal move'), error.toString())
         }
-    })
-
-    describe('scenarios:', () => {
-        it("first joining player is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
-            
-            instance.move( 0,0, {from:account})
-            instance.move( 1,1, {from:owner})
-            instance.move( 0,1, {from:account})
-            instance.move( 0,2, {from:owner})
-            instance.move( 1,0, {from:account})
-            instance.move( 2,0, {from:owner})
-            
-            const winner = await instance.winner()
-            assert.equal( winner, owner )
-        });
-
-        it("second joining player is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
-    
-            instance.move( 1,1, {from:account})
-            instance.move( 0,1, {from:owner})
-            instance.move( 0,2, {from:account})
-            instance.move( 1,0, {from:owner})
-            instance.move( 2,0, {from:account})
-            
-            const winner = await instance.winner()
-            assert.equal( winner, account )
-        });
-
-        it("no one is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
-    
-            instance.move( 1,1, {from:account})
-            instance.move( 0,1, {from:owner})
-            instance.move( 0,2, {from:account})
-            instance.move( 2,0, {from:owner})
-            instance.move( 2,1, {from:account})
-            instance.move( 1,0, {from:owner})
-            instance.move( 0,0, {from:account})
-            instance.move( 2,2, {from:owner})
-            instance.move( 1,2, {from:account})
-
-            const winner = await instance.winner()
-            const player1 = await instance.player1();
-            const player2 = await instance.player2();
-            const isReady = await instance.isReady();
-            
-            assert.equal(winner, '0x0000000000000000000000000000000000000000')
-            assert.equal(player1, '0x0000000000000000000000000000000000000000')
-            assert.equal(player2, '0x0000000000000000000000000000000000000000')
-            assert.equal(isReady, true)
-        })
     })
 })
