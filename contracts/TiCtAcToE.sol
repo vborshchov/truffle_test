@@ -68,7 +68,7 @@ contract TiCtAcToE
             activeUser = player1;
         }
 
-        if(checkWinner()){
+        if(checkWinner() || leftMoves == 0){
             reset();
         }
     }
