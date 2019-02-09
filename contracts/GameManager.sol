@@ -8,8 +8,15 @@ contract GameManager
     address[] public players;
     address[] public games;
     address public pendingGame;
+    // mapping (address => uint8) bla;
+
+    event playerJoinedGame(address gameAddress);
 
     constructor() public {
+    }
+
+    function getGames() public view returns (address[] memory) {
+        return games;
     }
 
     function createGame() internal returns (TiCtAcToE) {
@@ -19,27 +26,26 @@ contract GameManager
         return newGame;
     }
 
-    function createPlayer(address user) internal returns (address) {
-        address player;
-        player = createPlayer(user);
-        players.push(player);
+    function createPlayer(address user, string memory nickName) internal returns (Player) {
+        Player player;
+        player = new Player(nickName, user);
+        players.push(address(player));
         return player;
     }
 
-    function joinGame() public returns (TiCtAcToE) {
-        address player;
+    function joinGame(string memory nickName) public {
+        Player player;
         TiCtAcToE gameContract;
 
-        player = createPlayer(msg.sender);
+        player = createPlayer(msg.sender, nickName);
 
         if (pendingGame == address(0)) {
             gameContract = createGame();
         } else {
             gameContract = TiCtAcToE(pendingGame);
-            gameContract.setUser(msg.sender);
             pendingGame = address(0);
         }
-        gameContract.setUser(player);
-        return gameContract;
+        gameContract.setUser(msg.sender);
+        emit playerJoinedGame(address(gameContract));
     }
 }

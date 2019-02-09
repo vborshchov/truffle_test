@@ -7,10 +7,11 @@ contract Player
     address[] public wins;
     address[] public loses;
     string public nickName;
+    address playerOwner;
 
-    constructor(string memory name) public {
+    constructor(string memory name, address owner) public {
+        owner = playerOwner;
         nickName = name;
     }
-
     
 }
