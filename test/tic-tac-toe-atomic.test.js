@@ -30,15 +30,15 @@ contract('TiCtAcToE', accounts => {
     })
 
     it('should set active user', async () => {
-        await instance.setUser({from: owner})
-        await instance.setUser({from: account})
+        await instance.setUser(owner)
+        await instance.setUser(account)
         let currentActiveUser = await instance.activeUser()
         assert.equal(currentActiveUser, account)
     })
 
     it('should let player to make a move', async () => {
-        await instance.setUser({from: owner})
-        await instance.setUser({from: account})
+        await instance.setUser(owner)
+        await instance.setUser(account)
         await instance.move(1,1, {from: account})
         const cell = await instance.board(1,1)
         assert.equal(cell.toNumber(), 7)
@@ -46,8 +46,8 @@ contract('TiCtAcToE', accounts => {
 
     it('should fail to move to already taken board cell', async () => {
         try {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
+            await instance.setUser(owner)
+            await instance.setUser(account)
             await instance.move(1,1, {from: account})
             await instance.move(1,1, {from: owner})
             assert.fail()
@@ -57,8 +57,8 @@ contract('TiCtAcToE', accounts => {
     })
     it('should check legality of move', async () => {
         try {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
+            await instance.setUser(owner)
+            await instance.setUser(account)
             await instance.move(4,1, {from: account})
             assert.fail()
         } catch (error) {

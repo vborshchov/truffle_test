@@ -31,7 +31,7 @@ contract TiCtAcToE
         }
     }
 
-    function setUser() public{
+    function setUser(address user) public{
         require(
             player1 == address(0) ||
             player2 == address(0),
@@ -39,9 +39,9 @@ contract TiCtAcToE
         );
 
         if(player1 == address(0)){
-            player1 = msg.sender;
+            player1 = user;
         }else if(player2 == address(0)){
-            player2 = msg.sender;
+            player2 = user;
             activeUser = player2;
             isReady = false;
             for(uint8 i = 0; i < 3; i++ ){

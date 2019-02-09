@@ -12,8 +12,8 @@ contract('TiCtAcToE', accounts => {
 
     describe('scenarios:', () => {
         it("first joining player is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
+            await instance.setUser(owner)
+            await instance.setUser(account)
             
             await player1WinGameMoves(instance, account, owner)
             
@@ -21,8 +21,8 @@ contract('TiCtAcToE', accounts => {
         });
 
         it("second joining player is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
+            await instance.setUser(owner)
+            await instance.setUser(account)
     
             await player2WinGameMoves(instance, account, owner)
             
@@ -30,8 +30,8 @@ contract('TiCtAcToE', accounts => {
         });
 
         it("no one is a winner", async () => {
-            await instance.setUser({from: owner})
-            await instance.setUser({from: account})
+            await instance.setUser(owner)
+            await instance.setUser(account)
     
             await tieGameMoves(instance, account, owner)
 
@@ -43,8 +43,8 @@ contract('TiCtAcToE', accounts => {
 
         it("check availability of move after end of the game", async () => {
             try {
-                await instance.setUser({from: owner})
-                await instance.setUser({from: account})
+                await instance.setUser(owner)
+                await instance.setUser(account)
         
                 await tieGameMoves(instance, account, owner)
 

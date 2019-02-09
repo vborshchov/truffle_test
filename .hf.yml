@@ -1,0 +1,19 @@
+---
+deploy:
+  master: 'echo ''I will speak on: hf deploy master'' '
+  develop: 'echo ''I will speak on: hf deploy develop'' '
+before_deploy_commit: 'echo ''Before committing with deploy'' '
+locale: en
+skip_colorize: false
+
+source_branch: master
+mode: feature
+task_branch_name_tpl: "{mode}/{task_name}"
+
+project_name: TTT
+commit_massage_tpl: "[{project_name}] #{task_name}: {commit_message}"
+
+run:
+  compile: 'truffle compile'
+  migrate: 'truffle migrate --network ganache'
+  test: 'truffle test --network ganache'
