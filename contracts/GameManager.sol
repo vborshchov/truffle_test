@@ -1,6 +1,7 @@
 pragma solidity 0.5.0;
 
 import "./TiCtAcToE.sol";
+import "./Player.sol";
 
 contract GameManager
 {
