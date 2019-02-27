@@ -28,7 +28,7 @@ contract GameManager
 
     function createPlayer(address user, string memory nickName) internal returns (Player) {
         Player player;
-        player = new Player(nickName, user);
+        player = new Player(nickName, address(this), user);
         players.push(address(player));
         return player;
     }

@@ -8,7 +8,7 @@ contract('Player', accounts => {
     const nickName = "Victor"
 
     beforeEach('instance', async () => {
-        instance = await Player.new(nickName, owner)
+        instance = await Player.new(nickName, account, owner)
     })
 
     it('should be valid instance', async () =>{
