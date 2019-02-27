@@ -1,4 +1,8 @@
 pragma solidity 0.5.0;
+
+import "./Player.sol";
+import "GameManager.sol";
+
 contract TiCtAcToE
 {
     uint8 leftMoves;
@@ -8,8 +12,11 @@ contract TiCtAcToE
     address public player2; // 7 = x
     uint8[][] public board;
     address public winner = address(0);
+    address public GM;
+    uint256 public lastMoveTimeStamp;
 
     constructor() public {
+        this.GM = GM;
         isReady = true;
         leftMoves = 9;
         initArray();
@@ -17,6 +24,11 @@ contract TiCtAcToE
 
     modifier onlyActiveUser() {
         require(msg.sender == activeUser, "Only active user can make a move");
+        _;
+    }
+
+    modifier onlyGM() {
+        require(msg.sender == GM, "Only Game manager can call this function");
         _;
     }
 
@@ -58,37 +70,20 @@ contract TiCtAcToE
         require(row < 3 && col < 3, "illegal move");
         require(board[col][row] == 0, "the cell is already used by another player");
         leftMoves = leftMoves - 1;
+        lastMoveTimeStamp = block.timestamp;
 
         if(msg.sender == player1 ){
             board[col][row] = board[col][row] + 1;
             activeUser = player2;
-
         } else if(msg.sender == player2) {
             board[col][row] = board[col][row] + 7;
             activeUser = player1;
         }
 
         if(checkWinner() || leftMoves == 0){
-            reset();
+            reward();
         }
     }
-   
-    // function drawBoard() public view returns(string memory) {
-    //     string memory res = new string(30);
-    //     for(uint8 i = 0; i < 3; i++ ){
-    //         for(uint8 j = 0; j < 3; j++ ) {
-    //             if (board[i][j] == 1) {
-    //                 // res = res + " O ";
-    //             } else if (board[i][j] == 7) {
-    //                 // res = res + " X ";
-    //             } else if (board[i][j] == 0) {
-    //                 // res = res + " _ ";
-    //             }
-    //         }
-    //         // res = res + "\n";
-    //     }
-    //     return res;
-    // }
 
     function reset() internal{
         player1 = address(0);
@@ -136,5 +131,29 @@ contract TiCtAcToE
             return true;
         }
         return false;
+    }
+
+    function reward() internal {
+        if (winner == player1) {
+            Player(player1).incWins();
+            Player(player2).incDefeats();
+        } else if (winner == player2) {
+            Player(player2).incWins();
+            Player(player1).incDefeats();
+        }
+    }
+
+    function closeTable() internal {
+        if (activeUser == player1) {
+            winner = player2;
+        } else if (activeUser == player2) {
+            winner = player1;
+        }
+        reward();
+    }
+
+    function claimForWin() public {
+        require(lastMoveTimeStamp - block.timestamp >= 300, "You have more time to make a move");
+        closeTable();
     }
 }

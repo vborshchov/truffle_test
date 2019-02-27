@@ -5,7 +5,7 @@ import "./TiCtAcToE.sol";
 contract Player
 {
     uint256 public wins;
-    uint256 public loses;
+    uint256 public defeats;
     string public nickName;
     address currentGame;
     address playerOwner;
@@ -15,7 +15,7 @@ contract Player
         owner = playerOwner;
         nickName = name;
         wins = 0;
-        loses = 0;
+        defeats = 0;
         _gm = gm;
     }
 
@@ -29,12 +29,12 @@ contract Player
         _;
     }
 
-    function inkWins() external onlyCurrentGame{
+    function incWins() external onlyCurrentGame{
         wins++;
     }
 
-    function incLoses() external onlyCurrentGame{
-        loses++;
+    function incDefeats() external onlyCurrentGame{
+        defeats++;
     }
 
     function setLatestGame(address gameAddress) public onlyGameManager{

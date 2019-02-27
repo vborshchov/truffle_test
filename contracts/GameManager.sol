@@ -33,7 +33,9 @@ contract GameManager
         return player;
     }
 
-    function joinGame(string memory nickName) public {
+    function joinGame(string memory nickName) public payable {
+        require(msg.value >= 0.04 ether, "Please pay some value to join Game");
+
         Player player;
         TiCtAcToE gameContract;
 
